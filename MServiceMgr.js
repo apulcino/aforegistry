@@ -32,14 +32,17 @@ class MServiceMgr {
 
     //------------------------------------------------------------------------------
     //------------------------------------------------------------------------------
-    declare(type, url) {
+    declare(protocol, type, host, port, pathname) {
         let ms = {
             type: type,
-            url: url,
+            url: protocol + '://' + host + ':' + port,
+            host: host,
+            port: port,
+            pathname: pathname,
             status: 0,
             cptr: 0
         }
-        let index = this.indexOf(type, url);
+        let index = this.indexOf(type, ms.url);
         if (-1 === index) {
             this.items.push(ms);
             return ms;

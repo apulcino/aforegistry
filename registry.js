@@ -15,10 +15,10 @@ router.get('/list', (req, res) => {
     res.status(200).json(MServices.listAll());
 })
 //------------------------------------------------------------------------------
-// http://localhost:5555/registry/declare/MSType?url=....
+// http://localhost:5555/registry/declare/MSType?host=...&port=...&pathname=....
 //------------------------------------------------------------------------------
 router.get('/declare/:MSType', (req, res) => {
-    let ret = MServices.declare(req.params.MSType, req.query.url);
+    let ret = MServices.declare(req.protocol, req.params.MSType, req.query.host, req.query.port, req.query.pathname);
     if (ret) {
         res.status(200).json({
             isSuccess: true,
