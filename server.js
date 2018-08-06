@@ -1,13 +1,22 @@
 const http = require('http');
 const application = require('./application');
-const port = process.env.PORT || 5555;
+const constantes = require('../library/constantes');
+const multicastSender = require('../library/multicastSender');
+const multicastRecver = require('../library/multicastRecver');
+
+const port = process.env.PORT || 0;
+
+const mcSender = new multicastSender(constantes.MCastAppPort, constantes.MCastAppAddr);
 const server = http.createServer(application);
 server.listen(port, function () {
-
-  var host = server.address().address
+  var host = constantes.getServerIpAddress();
   var port = server.address().port
-
-  console.log("APIUSER listening at http://%s:%s", host, port)
-
+  mcSender.start(JSON.stringify({ type: constantes.MSMessageTypeEnum.regAnnonce, host: host, port: port }));
+  console.log("AFORegistry listening at http://%s:%s", host, port)
 });
-console.log('RESTful API server started on: ' + port);
+
+// const mcRecver = new multicastRecver(constantes.getServerIpAddress(), constantes.MCastAppPort, constantes.MCastAppAddr, (address, port, message) => {
+//   console.log('MCast Msg: From: ' + address + ':' + port + ' - ' + message);
+// });
+
+console.log('AFORegistry RESTful API server started on: ' + port);

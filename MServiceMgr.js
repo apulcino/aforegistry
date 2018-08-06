@@ -44,6 +44,7 @@ class MServiceMgr {
         }
         let index = this.indexOf(type, ms.url);
         if (-1 === index) {
+            console.log('Registry declaration : ', ms);
             this.items.push(ms);
             return ms;
         } else {
