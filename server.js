@@ -7,7 +7,9 @@ const multicastRecver = require('../library/multicastRecver');
 
 const port = process.env.PORT || 0;
 
+// Diffuseur de notification multicast
 const mcSender = new multicastSender(constantes.MCastAppPort, constantes.MCastAppAddr);
+// Créer un serveur HTTP
 const server = http.createServer(application);
 server.listen(port, function () {
   var host = constantes.getServerIpAddress();

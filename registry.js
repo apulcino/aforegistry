@@ -6,16 +6,19 @@ const MServiceMgr = require('./MServiceMgr');
 
 
 //------------------------------------------------------------------------------
+// Gestionnaire de composants
 //------------------------------------------------------------------------------
 const MServices = new MServiceMgr();
 
 //------------------------------------------------------------------------------
+// Demander la liste des composants disponibles
 // http://localhost:5555/registry/list
 //------------------------------------------------------------------------------
 router.get('/list', (req, res) => {
     res.status(200).json(MServices.listAll());
 })
 //------------------------------------------------------------------------------
+// Réception de la déclaration d'un composant
 // http://localhost:5555/registry/declare/MSType?host=...&port=...&pathname=....
 //------------------------------------------------------------------------------
 router.get('/declare/:MSType', (req, res) => {

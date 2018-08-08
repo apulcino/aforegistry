@@ -1,12 +1,15 @@
+//------------------------------------------------------------------------------
+// Gestion des composants
+//------------------------------------------------------------------------------
 "use strict"
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
 const fetch = require('node-fetch');
 
 //------------------------------------------------------------------------------
+// Gestionnaire des composants
 //------------------------------------------------------------------------------
 class MServiceMgr {
     //------------------------------------------------------------------------------
+    // Utilisation d'un timer pour vérifier l'état des composants
     //------------------------------------------------------------------------------
     constructor() {
         this.idxcheckMService = 0;
@@ -19,19 +22,29 @@ class MServiceMgr {
                 this.checkMService(url).then(res => {
                     Srv.cptr += 1;
                     Srv.status = (res === true);
+                    if (Srv.status === false) {
+                        let arr = this.items.splice(this.idxcheckMService, 1);
+                        console.log('AFORegistry : remove component ref : ', arr[0]);
+                    } else {
+                        this.idxcheckMService += 1;
+                    }
                 });
-                this.idxcheckMService += 1;
             }
         }, 5000);
     }
 
     //------------------------------------------------------------------------------
+    // Retourner la liste des composants actifs
     //------------------------------------------------------------------------------
     listAll() {
-        return this.items;
+        let activeCompos = this.items.filter((Srv) => {
+            return (Srv.status === true);
+        });
+        return activeCompos;
     }
 
     //------------------------------------------------------------------------------
+    // Ajoute un nouveau composant à la liste
     //------------------------------------------------------------------------------
     declare(protocol, type, host, port, pathname) {
         let ms = {
@@ -45,7 +58,7 @@ class MServiceMgr {
         }
         let index = this.indexOf(type, ms.url);
         if (-1 === index) {
-            console.log('Registry declaration : ', ms);
+            console.log('AFORegistry : declare component : ', ms);
             this.items.push(ms);
             return ms;
         } else {
@@ -54,6 +67,7 @@ class MServiceMgr {
         }
     }
     //------------------------------------------------------------------------------
+    // Rechercher un composant à partir de son type et de son Url
     //------------------------------------------------------------------------------
     indexOf(type, url) {
         let idx = -1;
@@ -66,6 +80,7 @@ class MServiceMgr {
         return idx;
     }
     //------------------------------------------------------------------------------
+    // Appeler le composant pour connaitre son état
     //------------------------------------------------------------------------------
     checkMService(urlSrv) {
         return new Promise(function (resolve, reject) {
@@ -75,7 +90,6 @@ class MServiceMgr {
             }).then(response => {
                 resolve(true);
             }).catch(err => {
-                console.log('checkMService : Error on service : ', urlSrv);
                 resolve(false);
             });
         });
