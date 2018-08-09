@@ -3,6 +3,8 @@
 //------------------------------------------------------------------------------
 "use strict"
 const fetch = require('node-fetch');
+const constantes = require('../library/constantes');
+const multicastSender = require('../library/multicastSender');
 
 //------------------------------------------------------------------------------
 // Gestionnaire des composants
@@ -12,6 +14,9 @@ class MServiceMgr {
     // Utilisation d'un timer pour vérifier l'état des composants
     //------------------------------------------------------------------------------
     constructor() {
+        // Diffuseur de notification multicast
+        this.mcSender = new multicastSender(constantes.MCastAppPort, constantes.MCastAppAddr);
+
         this.idxcheckMService = 0;
         this.items = [];
         this.intervalObj = setInterval(() => {
@@ -25,6 +30,7 @@ class MServiceMgr {
                     if (Srv.status === false) {
                         let arr = this.items.splice(this.idxcheckMService, 1);
                         console.log('AFORegistry : remove component ref : ', arr[0]);
+                        this.sendRegistryUpdateMsg();
                     } else {
                         this.idxcheckMService += 1;
                     }
@@ -32,7 +38,11 @@ class MServiceMgr {
             }
         }, 5000);
     }
-
+    //------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------
+    sendRegistryUpdateMsg() {
+        this.mcSender.sendOnce(JSON.stringify({ type: constantes.MSMessageTypeEnum.regUpdate }));
+    }
     //------------------------------------------------------------------------------
     // Retourner la liste des composants actifs
     //------------------------------------------------------------------------------
@@ -60,6 +70,7 @@ class MServiceMgr {
         if (-1 === index) {
             console.log('AFORegistry : declare component : ', ms);
             this.items.push(ms);
+            this.sendRegistryUpdateMsg();
             return ms;
         } else {
             this.items[index].cptr += 1;

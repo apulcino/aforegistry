@@ -14,7 +14,7 @@ const server = http.createServer(application);
 server.listen(port, function () {
   var host = constantes.getServerIpAddress();
   var port = server.address().port
-  mcSender.start(JSON.stringify({ type: constantes.MSMessageTypeEnum.regAnnonce, host: host, port: port }));
+  mcSender.sendAlways(JSON.stringify({ type: constantes.MSMessageTypeEnum.regAnnonce, host: host, port: port }));
   console.log("AFORegistry listening at http://%s:%s", host, port)
 });
 
