@@ -13,7 +13,8 @@ class MServiceMgr {
     //------------------------------------------------------------------------------
     // Utilisation d'un timer pour vérifier l'état des composants
     //------------------------------------------------------------------------------
-    constructor() {
+    constructor(traceMgr) {
+        this.traceMgr = traceMgr;
         // Diffuseur de notification multicast
         this.mcSender = new multicastSender(constantes.MCastAppPort, constantes.MCastAppAddr);
 
@@ -29,7 +30,10 @@ class MServiceMgr {
                     Srv.status = (res === true);
                     if (Srv.status === false) {
                         let arr = this.items.splice(this.idxcheckMService, 1);
-                        console.log('AFORegistry : remove component ref : ', arr[0]);
+                        this.traceMgr.warn('Remove component ref : ', arr[0]);
+                        if (0 === this.items.length) {
+                            this.traceMgr.error('No component available');
+                        }
                         this.sendRegistryUpdateMsg();
                     } else {
                         this.idxcheckMService += 1;
@@ -68,7 +72,7 @@ class MServiceMgr {
         }
         let index = this.indexOf(type, ms.url);
         if (-1 === index) {
-            console.log('AFORegistry : declare component : ', ms);
+            this.traceMgr.info('Declare component : ', ms);
             this.items.push(ms);
             this.sendRegistryUpdateMsg();
             return ms;

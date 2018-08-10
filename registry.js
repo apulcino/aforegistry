@@ -3,12 +3,13 @@ const fetch = require('node-fetch');
 const express = require('express');
 const router = express.Router();
 const MServiceMgr = require('./MServiceMgr');
+const traceMgr = new (require('../library/tracemgr'))('AFORegistry');
 
 
 //------------------------------------------------------------------------------
 // Gestionnaire de composants
 //------------------------------------------------------------------------------
-const MServices = new MServiceMgr();
+const MServices = new MServiceMgr(traceMgr);
 
 //------------------------------------------------------------------------------
 // Demander la liste des composants disponibles

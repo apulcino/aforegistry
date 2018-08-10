@@ -2,6 +2,7 @@
 const http = require('http');
 const application = require('./application');
 const constantes = require('../library/constantes');
+const traceMgr = new (require('../library/tracemgr'))('AFORegistry');
 const multicastSender = require('../library/multicastSender');
 const multicastRecver = require('../library/multicastRecver');
 
@@ -15,11 +16,10 @@ server.listen(port, function () {
   var host = constantes.getServerIpAddress();
   var port = server.address().port
   mcSender.sendAlways(JSON.stringify({ type: constantes.MSMessageTypeEnum.regAnnonce, host: host, port: port }));
-  console.log("AFORegistry listening at http://%s:%s", host, port)
+  traceMgr.info("AFORegistry listening at http://%s:%s", host, port)
 });
 
 // const mcRecver = new multicastRecver(constantes.getServerIpAddress(), constantes.MCastAppPort, constantes.MCastAppAddr, (address, port, message) => {
 //   console.log('MCast Msg: From: ' + address + ':' + port + ' - ' + message);
 // });
-
-console.log('AFORegistry RESTful API server started on: ' + port);
+// traceMgr.log('AFORegistry RESTful API server started on: ' + port);
