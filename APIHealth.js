@@ -1,6 +1,7 @@
 "use strict"
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
+const os = require('os');
 const express = require('express');
 const router = express.Router();
 
@@ -13,4 +14,12 @@ router.get('/status', (req, res) => {
     });
 })
 
+//------------------------------------------------------------------------------
+// http://localhost:3002/health/ipstatus
+//------------------------------------------------------------------------------
+router.get('/ipstatus', (req, res) => {
+    res.status(200).json(
+        os.networkInterfaces()
+    );
+})
 module.exports = router;
