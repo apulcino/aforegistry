@@ -11,7 +11,7 @@ DataShared.initialize(traceMgr);
 const port = process.env.PORT || 0;
 
 // Diffuseur de notification multicast
-const mcSender = new multicastSender(constantes.MCastAppPort, constantes.MCastAppAddr);
+const mcSender = new multicastSender(constantes.MCastAppPort, constantes.MCastAppAddr, constantes.getServerPublicIpAddress());
 // Créer un serveur HTTP
 const server = http.createServer(application);
 server.listen(port, function () {
@@ -22,7 +22,7 @@ server.listen(port, function () {
 });
 
 //const MServices = new MServiceMgr(traceMgr);
-const mcRecver = new multicastRecver(constantes.getServerIpAddress(), constantes.MCastAppPort, constantes.MCastAppAddr, (address, port, message) => {
+const mcRecver = new multicastRecver(constantes.getServerIpAddress(), constantes.MCastAppPort, constantes.MCastAppAddr, constantes.getServerPublicIpAddress(), (address, port, message) => {
   switch (message.type) {
     case constantes.MSMessageTypeEnum.compoDeclare:
       traceMgr.info('MCast Msg: From: ' + address + ':' + port + ' - ' + JSON.stringify(message));

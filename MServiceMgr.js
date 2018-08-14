@@ -16,7 +16,7 @@ class MServiceMgr {
     constructor(traceMgr) {
         this.traceMgr = traceMgr;
         // Diffuseur de notification multicast
-        this.mcSender = new multicastSender(constantes.MCastAppPort, constantes.MCastAppAddr);
+        this.mcSender = new multicastSender(constantes.MCastAppPort, constantes.MCastAppAddr, constantes.getServerPublicIpAddress());
 
         this.idxcheckMService = 0;
         this.items = [];
