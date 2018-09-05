@@ -18,7 +18,8 @@ server.listen(port, function () {
   var host = constantes.getServerIpAddress();
   var port = server.address().port
   mcSender.sendAlways(JSON.stringify({ type: constantes.MSMessageTypeEnum.regAnnonce, host: host, port: port }), 10000);
-  traceMgr.info("AFORegistry listening at http://%s:%s", host, port)
+  traceMgr.info("AFORegistry listening at http://%s:%s", host, port);
+  application.initialize(host, port);
 });
 
 //const MServices = new MServiceMgr(traceMgr);
