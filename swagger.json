@@ -30,7 +30,7 @@
     "/list": {
       "get": {
         "tags": [
-          "Components"
+          "Registry"
         ],
         "summary": "Get all components available in system",
         "responses": {
