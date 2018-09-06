@@ -1,7 +1,7 @@
 {
   "name": "authent",
   "version": "1.0.0",
-  "description": "",
+  "description": "AFORegistry: composant destiné à référencer les liste des services disponibles sur le réseau",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
